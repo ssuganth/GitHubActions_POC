@@ -12,7 +12,6 @@ on:
             environment:
                 description: 'Dev'     
                 required: true
-                default: 'prod'
 jobs:
     job1:
         name: Set Version
