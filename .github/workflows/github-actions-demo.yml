@@ -1,47 +1,47 @@
 name: GitHub Actions Demo
+
 on:
-  push:
-    branches: main
-  release:
-    types: published
+    push:
+        branches: main
+    
+    release:
+        types: published
+    
 env:
-  version: 'unmanaged'
+    version: 'unmanaged'
   
 jobs:
-  job1:
-    name: Set Version
-    runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.step3.outputs.finalVersion }}
-    steps:
-      -id: step1
-      -name: push condititon
-      if: ${{ github.event_name == 'push' }}     
-      run: |
-          echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-          echo "version=managed" >> $GITHUB_ENV
-      
-      -id: step2
-      -name: Release condititon
-      if: ${{ github.event_name == 'release' }}
-      run: |
-          echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-          echo "version=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+    job1:
+        name: Set Version
+        runs-on: ubuntu-latest
+        outputs:
+            output1: ${{ steps.step3.outputs.finalVersion }}
+        steps:
+          - name: push condititon
+            id: step1
+            if: ${{ github.event_name == 'push' }}     
+            run: |
+                echo The job was automatically triggered by a ${{ github.event_name }} event."
+                echo "version=managed" >> $GITHUB_ENV
+          
+          - name: Release condititon
+            id: step2
+            if: ${{ github.event_name == 'release' }}
+            run: |
+                echo "The job was automatically triggered by a ${{ github.event_name }} event."
+                echo "version=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
     
-      -id: step3
-      -name: print env variable
-      run: |
-          echo "image version is ${{ env.version }}"
-          echo "::set-output name=finalVersion::${{ env.version }}"
+          - name: print env variable
+            id: step3
+            run: |
+                echo "image version is ${{ env.version }}"
+                echo "::set-output name=finalVersion::${{ env.version }}"
   
-  job2:
-    name: Print Version
-    needs: [job1]
-    runs-on: ubuntu-latest
-    steps:
-      - name: print env variable
-        run: |
-            echo "image version is ${{needs.job1.outputs.finalVersion}}"
-      
-    
-    
+    job2:
+      name: Print Version
+      needs: [job1]
+      runs-on: ubuntu-latest
+      steps:
+        - name: print env variable
+          run: |
+              echo "image version is ${{needs.job1.outputs.finalVersion}}"
