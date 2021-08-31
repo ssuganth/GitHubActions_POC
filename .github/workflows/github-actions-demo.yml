@@ -9,7 +9,7 @@ env:
   
 jobs:
   job1:
-    name: Explore-GitHub-Actions
+    name: Set Version
     runs-on: ubuntu-latest
     steps:
       - name: condition 1
@@ -20,9 +20,20 @@ jobs:
       
       - name: condition 2
         if: ${{ github.event_name == 'release' }}
-        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+        run: |
+            echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
     
       - name: print env variable
         run: |
             echo "image version is ${{ env.version }}"
+  
+  job2:
+    name: Print Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: print env variable
+        run: |
+            echo "image version is ${{ env.version }}"
+      
+    
     
