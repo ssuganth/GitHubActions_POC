@@ -16,7 +16,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}     
         run: |
             echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-            run: echo "::set-env name=version::managed"
+            echo "::set-env name=version::managed"
       
       - name: condition 2
         if: ${{ github.event_name == 'release' }}
