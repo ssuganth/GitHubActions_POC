@@ -7,12 +7,12 @@ on:
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    env:
+        version: unmanaged
     steps:
     - name: condition 1
       if: ${{ github.event_name == 'push' }}
       run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      env:
-        version: unmanaged
       
     - name: condition 2
       if: ${{ github.event_name == 'published' }}
