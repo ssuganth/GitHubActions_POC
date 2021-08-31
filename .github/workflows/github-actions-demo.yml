@@ -7,19 +7,17 @@ on:
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
-    env:
-        version: unmanaged
     steps:
     - name: condition 1
       if: ${{ github.event_name == 'push' }}
       run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+            version=unmanaged
+            echo "::set-output name=version::$version"
       
     - name: condition 2
       if: ${{ github.event_name == 'release' }}
       run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      env: 
-        version: V1.0
     
     - name: print env variable
-      run: echo "image version is ${{ env.version }} "
+      run: echo "image version is $version"
     
