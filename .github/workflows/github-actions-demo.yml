@@ -10,8 +10,9 @@ on:
     workflow_dispatch:
         inputs:
             environment:
-                description: 'Dev'     
+                description: 'Release Environment'     
                 required: true
+                default: 'DEV'
 jobs:
     job1:
         name: Set Version
@@ -38,6 +39,7 @@ jobs:
             run: |
                 echo "Release version is ${{ env.version }}"
                 echo "::set-output name=finalVersion::${{ env.version }}"
+                echo "Release Environment: ${{ github.event.inputs.environment }}" 
   
     job2:
       name: Release Version
@@ -47,3 +49,4 @@ jobs:
         - name: Print Release Version - InterJob
           run: |
               echo "Release version is ${{needs.job1.outputs.releaseVersion}}"
+              echo "Release Environment: ${{ github.event.inputs.environment }}" 
