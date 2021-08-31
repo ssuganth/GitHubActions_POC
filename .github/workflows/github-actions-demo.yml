@@ -16,12 +16,13 @@ jobs:
         if: ${{ github.event_name == 'push' }}     
         run: |
             echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-            echo "::set-env name=version::managed"
+            echo "version=managed" >> $GITHUB_ENV
       
       - name: condition 2
         if: ${{ github.event_name == 'release' }}
         run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
     
       - name: print env variable
-        run: echo "image version is $version"
+        run: |
+            echo "image version is ${{ env.version }}"
     
