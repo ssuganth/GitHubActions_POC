@@ -21,7 +21,7 @@ jobs:
             id: step1
             if: ${{ github.event_name == 'push' }}     
             run: |
-                echo The job was automatically triggered by a ${{ github.event_name }} event."
+                echo "The job was automatically triggered by a ${{ github.event_name }} event."
                 echo "version=managed" >> $GITHUB_ENV
           
           - name: Release condititon
