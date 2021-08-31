@@ -14,21 +14,21 @@ jobs:
         outputs:
             releaseVersion: ${{ steps.step3.outputs.finalVersion }}
         steps:
-          - name: push condititon
+          - name: Push Condititon
             id: step1
             if: ${{ github.event_name == 'push' }}     
             run: |
                 echo "The job was automatically triggered by a ${{ github.event_name }} event."
                 echo "version=unmanaged" >> $GITHUB_ENV
           
-          - name: Release condititon
+          - name: Release Condititon
             id: step2
             if: ${{ github.event_name == 'release' }}
             run: |
                 echo "The job was automatically triggered by a ${{ github.event_name }} event."
                 echo "version=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
     
-          - name: print env variable
+          - name: Print Release Version - IntraJob
             id: step3
             run: |
                 echo "Release version is ${{ env.version }}"
@@ -39,6 +39,6 @@ jobs:
       needs: [job1]
       runs-on: ubuntu-latest
       steps:
-        - name: print env variable
+        - name: Print Release Version - InterJob
           run: |
               echo "Release version is ${{needs.job1.outputs.releaseVersion}}"
