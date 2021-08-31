@@ -6,7 +6,13 @@ on:
     
     release:
         types: published
-  
+    
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Dev'     
+                required: true
+                default: 'prod'
 jobs:
     job1:
         name: Set Version
