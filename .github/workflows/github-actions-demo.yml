@@ -17,23 +17,27 @@ jobs:
         run: |
             echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
             echo "version=managed" >> $GITHUB_ENV
+            
       
       - name: condition 2
         if: ${{ github.event_name == 'release' }}
         run: |
             echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+            echo "version=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
     
       - name: print env variable
         run: |
-            echo "image version is ${{ env.version }}"
+            echo "image version is $GITHUB_ENV"
+            echo "::set-output name=finalVersion::$GITHUB_ENV"
   
   job2:
     name: Print Version
+    needs: [job1]
     runs-on: ubuntu-latest
     steps:
       - name: print env variable
         run: |
-            echo "image version is ${{ env.version }}"
+            echo "image version is ${{ needs.job1.outputs.finalVersion }}"
       
     
     
