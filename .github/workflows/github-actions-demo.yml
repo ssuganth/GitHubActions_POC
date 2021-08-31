@@ -4,22 +4,24 @@ on:
     branches: main
   release:
     types: published
+env:
+  version: 'unmanaged'
+  
 jobs:
-  Explore-GitHub-Actions:
+  job1:
+    name: Explore-GitHub-Actions
     runs-on: ubuntu-latest
     steps:
-    - name: condition 1
-      id: pushcondn
-      if: ${{ github.event_name == 'push' }}     
-      run: |
-          echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-          version="unmanaged"
-          echo "::set-output name=version::$version"
+      - name: condition 1
+        if: ${{ github.event_name == 'push' }}     
+        run: |
+            echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+            run: echo "::set-env name=version::managed"
       
-    - name: condition 2
-      if: ${{ github.event_name == 'release' }}
-      run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: condition 2
+        if: ${{ github.event_name == 'release' }}
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
     
-    - name: print env variable
-      run: echo "image version is ${{ steps.pushcondn.outputs.version }}"
+      - name: print env variable
+        run: echo "image version is $version"
     
