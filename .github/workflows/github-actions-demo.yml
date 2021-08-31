@@ -44,4 +44,4 @@ jobs:
       steps:
         - name: print env variable
           run: |
-              echo "image version is ${{needs.job1.outputs.finalVersion}}"
+              echo "image version is ${{needs.job1.outputs.output1}}"
