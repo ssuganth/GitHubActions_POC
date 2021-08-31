@@ -15,7 +15,7 @@ jobs:
       run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       
     - name: condition 2
-      if: ${{ github.event_name == 'published' }}
+      if: ${{ github.event_name == 'release' }}
       run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       env: 
         version: V1.0
