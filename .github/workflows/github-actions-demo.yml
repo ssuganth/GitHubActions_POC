@@ -9,15 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: condition 1
-      if: ${{ github.event_name == 'push' }}
-      run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-            version=unmanaged
-            echo "::set-output name=version::$version"
+      id: pushcondn
+      if: ${{ github.event_name == 'push' }}     
+      run: |
+          echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+          version="unmanaged"
+          echo "::set-output name=version::$version"
       
     - name: condition 2
       if: ${{ github.event_name == 'release' }}
       run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
     
     - name: print env variable
-      run: echo "image version is $version"
+      run: echo "image version is ${{ steps.pushcondn.outputs.version }}"
     
