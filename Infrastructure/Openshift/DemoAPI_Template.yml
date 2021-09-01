@@ -1,0 +1,99 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: demoapi-template
+  description: Deployment template for the demoapi App
+
+objects:
+### Test Portal ###
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  namespace: ssuganth-dev
+  metadata:
+    name: demoapi-dc
+    namespace: ssuganth-dev
+    labels:
+      app.kubernetes.io/part-of: demoapi-app
+  spec:
+    completionDeadlineSeconds: 1200
+    replicas: 2
+    selector:
+      name: demoapi-dc
+    strategy:
+      type: Rolling
+      maxSurge: 50%
+      maxUnavailable: 0
+    template:
+      metadata:
+        labels:
+          dev-app: demoapi-app
+          name: demoapi-dc
+      spec:
+        containers:
+          - image: >-
+              image-registry.openshift-image-registry.svc:5000/ssuganth-dev/sampledemo-api:dev
+            name: demoapi-dc
+            ports:
+              - containerPort: 8080
+            resources:
+              limits:
+                cpu: 10m
+                memory: 64Mi
+              requests:
+                cpu: 10m
+                memory: 64Mi
+    triggers:
+      - type: ImageChange
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - demoapi-dc
+          from:
+            kind: ImageStreamTag
+            namespace: "ssuganth-dev"
+            name: 'sampledemo-api:dev'
+  status: {}
+### Citizen Portal Service ###
+- apiVersion: v1
+  kind: Service
+  namespace: ssuganth-dev
+  labels:
+    app: demoapi-dc
+    app.kubernetes.io/component: demoapi-app
+    app.kubernetes.io/instance: demoapi-app
+    app.kubernetes.io/part-of: demoapi-app
+  metadata:
+    name: demoapi-dc
+    namespace: ssuganth-dev
+    labels:
+      app.kubernetes.io/part-of: demoapi-app
+  spec:
+    ports:
+      - name: "http"
+        port: 8080
+        targetPort: 8080
+    selector:
+      name: demoapi-dc
+### Citizen Portal Routes ###
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  namespace: ssuganth-dev
+  labels:
+    app: demoapi-dc
+    app.kubernetes.io/component: demoapi-app
+    app.kubernetes.io/instance: demoapi-app
+    app.kubernetes.io/part-of: demoapi-app
+  metadata:
+    name: demoapi-dc
+    namespace: ssuganth-dev
+  spec:
+    host: demoapi-ssuganth-dev.gov.bc.ca
+    to:
+      kind: Service
+      name: demoapi-dc
+      weight: 100
+    port:
+      targetPort: http
+    tls:
+      termination: edge
+    wildcardPolicy: None

@@ -1,0 +1,52 @@
+name: GitHub Actions Demo
+
+on:
+    #push:
+    #    branches: main
+    
+    #release:
+    #    types: published
+    
+    #workflow_dispatch:
+    #   inputs:
+    #        environment:
+    #            description: 'Release Environment'     
+    #            required: true
+    #            default: 'DEV'
+jobs:
+    job1:
+        name: Set Version
+        runs-on: ubuntu-latest
+        outputs:
+            releaseVersion: ${{ steps.step3.outputs.finalVersion }}
+        steps:
+          - name: Push Condititon
+            id: step1
+            if: ${{ github.event_name == 'push' }}     
+            run: |
+                echo "The job was automatically triggered by a ${{ github.event_name }} event."
+                echo "version=unmanaged" >> $GITHUB_ENV
+          
+          - name: Release Condititon
+            id: step2
+            if: ${{ github.event_name == 'release' }}
+            run: |
+                echo "The job was automatically triggered by a ${{ github.event_name }} event."
+                echo "version=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+    
+          - name: Print Release Version - IntraJob
+            id: step3
+            run: |
+                echo "Release version is ${{ env.version }}"
+                echo "::set-output name=finalVersion::${{ env.version }}"
+                echo "Release Environment: ${{ github.event.inputs.environment }}" 
+  
+    job2:
+      name: Release Version
+      needs: [job1]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Print Release Version - InterJob
+          run: |
+              echo "Release version is ${{needs.job1.outputs.releaseVersion}}"
+              echo "Release Environment: ${{ github.event.inputs.environment }}" 
