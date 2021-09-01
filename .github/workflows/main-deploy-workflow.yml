@@ -21,7 +21,7 @@ jobs:
       - name: Login to OpenShift
         uses: docker/login-action@v1
         with:
-          registry: image-registry.openshift-image-registry.svc:5000/ssuganth-dev/sampledemo-api
+          registry: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com
           username: ssuganth
           password: sowmiya@77
 
