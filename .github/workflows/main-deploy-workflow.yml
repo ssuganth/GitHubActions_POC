@@ -37,6 +37,4 @@ jobs:
           docker build \
             --build-arg ASPNETCORE_ENVIRONMENT=Development \
             --tag ${IMAGE} \
-            --tag ${VERIMAGE} \
             docker push ${IMAGE}
-            docker push ${VERIMAGE}
