@@ -29,7 +29,7 @@ jobs:
         env:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
-          CONTEXT: ./DotnetCoreSampleApp
+          CONTEXT: .
           IMAGE: image-registry.openshift-image-registry.svc:5000/ssuganth-dev/sampledemo-api:${{ github.event.inputs.environment }}
           VERIMAGE: image-registry.openshift-image-registry.svc:5000/ssuganth-dev/sampledemo-api:${{ github.event.inputs.version }}
           RuntimeEnv: ${{ github.event.inputs.environment }}
