@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.6.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SampleApp.Data\SampleApp.Data.csproj" />
+    <ProjectReference Include="..\SampleApp.Persistence\SampleApp.Persistence.csproj" />
+    <ProjectReference Include="..\SampleApp.Utility\SampleApp.Utility.csproj" />
+  </ItemGroup>
+
+</Project>
