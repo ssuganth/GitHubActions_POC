@@ -30,8 +30,8 @@ jobs:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
           CONTEXT: .
-          IMAGE: image-registry.openshift-image-registry.svc:5000/ssuganth-dev/sampledemo-api:${{ github.event.inputs.environment }}
-          VERIMAGE: image-registry.openshift-image-registry.svc:5000/ssuganth-dev/sampledemo-api:${{ github.event.inputs.version }}
+          IMAGE: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/sampledemo-api:${{ github.event.inputs.environment }}
+          VERIMAGE: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/sampledemo-api:${{ github.event.inputs.version }}
           RuntimeEnv: ${{ github.event.inputs.environment }}
         run: |
           docker build \
