@@ -39,7 +39,7 @@ namespace DotnetCoreSampleApp
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SampleApp API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Suganth DEMO - OpenShift Hosted API", Version = "v1" });
             });
         }
 
@@ -66,7 +66,7 @@ namespace DotnetCoreSampleApp
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SampleApp API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Suganth DEMO - OpenShift Hosted API V1");
                 c.RoutePrefix = string.Empty;
             });
 

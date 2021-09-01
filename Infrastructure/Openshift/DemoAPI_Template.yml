@@ -87,7 +87,7 @@ objects:
     name: demoapi-dc
     namespace: ssuganth-dev
   spec:
-    host: demoapi-ssuganth-dev.gov.bc.ca
+    #host: demoapi-ssuganth-dev.gov.bc.ca
     to:
       kind: Service
       name: demoapi-dc
