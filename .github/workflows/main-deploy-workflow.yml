@@ -1,6 +1,6 @@
-name: Main-Build .NET API Image and Push to Openshift Registry
-on:
-        
+name: Deployment Trigger workflow and Push to Openshift Registry
+
+on:        
     workflow_dispatch:
         inputs:
             environment:
@@ -23,7 +23,7 @@ jobs:
         with:
           registry: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com
           username: ssuganth
-          password: sha256~7cYirqerz0ruBFsruSgXTo8DSmzoncBRU-guHD8WjKc
+          password: sha256~tX5_CpoPUi5d5KxrTWgIPUYS8-opLgQiWE450ZVZbOI
 
       - name: Build and push
         env:
