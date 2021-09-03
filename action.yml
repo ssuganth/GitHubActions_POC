@@ -1,0 +1,11 @@
+name: github-script
+description: Run simple scripts using the GitHub client
+
+inputs:
+  script:
+    description: The script to run
+    required: true
+  
+runs:
+  using: 'node12'
+  main: '.github/scripts/validateEnv.js'
