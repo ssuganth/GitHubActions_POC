@@ -17,10 +17,10 @@ jobs:
     steps:
 
       - name: Git Checkout
-        uses: actions/GitHubActions_POC@master
+        uses: actions/checkout@v2
         
       - name: Hello world action step
-        uses: ./action.yml
+        uses: actions/GitHubActions_POC@master
         with:
             who-to-greet: 'Suganth'
     
