@@ -17,6 +17,7 @@ jobs:
     steps:
     
       - name: Validate User Input  Environment
+        uses: actions/github-script@v4
         run: environment=${{ github.event.inputs.environment }} node .github/scripts/validateEnv.js
         
       - name: Git Checkout
