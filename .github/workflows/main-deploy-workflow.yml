@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-20.04
     environment: ${{ github.event.inputs.environment }}
     steps:
+    
+      - name: Validate User Input  Environment
+        run: environment=${{ github.event.inputs.environment }} node .github/scripts/validateEnv.js
+        
       - name: Git Checkout
         uses: actions/checkout@v2
     
