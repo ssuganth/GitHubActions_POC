@@ -23,7 +23,7 @@ jobs:
         with:
           registry: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com
           username: ssuganth
-          password: sha256~tX5_CpoPUi5d5KxrTWgIPUYS8-opLgQiWE450ZVZbOI
+          password: sha256~t8ZTFHwtTtooiX6eDRavBP6-0q0BCARLVxGvAw8t4QA
 
       - name: Build and push
         env:
