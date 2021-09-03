@@ -17,7 +17,7 @@ jobs:
     steps:
 
       - name: Git Checkout
-        uses: actions/checkout@v2
+        uses: actions/GitHubActions_POC@master
         
       - name: Hello world action step
         uses: ./action.yml
