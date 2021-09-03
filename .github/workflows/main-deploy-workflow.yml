@@ -18,7 +18,10 @@ jobs:
     
       - name: Validate User Input  Environment
         uses: actions/github-script@v4
-        run: environment=${{ github.event.inputs.environment }} node .github/scripts/validateEnv.js
+        with:
+          script: |
+            const script = require('./.github/scripts/validateEnv.js')
+            console.log(script({github, context}))
         
       - name: Git Checkout
         uses: actions/checkout@v2
