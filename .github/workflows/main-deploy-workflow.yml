@@ -16,7 +16,7 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Hello world action step
-        uses: actions/action.yml
+        uses: ./action.yml
         with:
             who-to-greet: 'Suganth'
         
