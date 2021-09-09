@@ -18,11 +18,6 @@ jobs:
 
       - name: Git Checkout
         uses: actions/checkout@v2
-        
-      - name: Hello world action step
-        uses: actions/GitHubActions_POC@v1
-        with:
-            who-to-greet: 'Suganth'
     
       - name: Login to OpenShift
         uses: docker/login-action@v1
