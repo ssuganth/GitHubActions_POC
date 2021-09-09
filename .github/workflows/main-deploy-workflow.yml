@@ -29,15 +29,15 @@ jobs:
         with:
           registry: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com
           username: ssuganth
-          password: sha256~t8ZTFHwtTtooiX6eDRavBP6-0q0BCARLVxGvAw8t4QA
+          password: sha256~F-K6vylq8ZgJ5pMjJxdhd-jK2WMcNzO-jsZ2UgdvZKo
 
       - name: Build and push
         env:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
           CONTEXT: .
-          IMAGE: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/sampledemo-api:${{ github.event.inputs.environment }}
-          VERIMAGE: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/sampledemo-api:${{ github.event.inputs.version }}
+          IMAGE: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-stage/sampledemo-api:${{ github.event.inputs.environment }}
+          VERIMAGE: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-stage/sampledemo-api:${{ github.event.inputs.version }}
           RuntimeEnv: ${{ github.event.inputs.environment }}
         run: |
           docker build \
