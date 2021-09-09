@@ -1,0 +1,20 @@
+  apiVersion: v1
+  kind: Service
+  namespace: ssuganth-dev
+  labels:
+    app: demoapi-dc
+    app.kubernetes.io/component: demoapi-app
+    app.kubernetes.io/instance: demoapi-app
+    app.kubernetes.io/part-of: demoapi-app
+  metadata:
+    name: demoapi-dc
+    namespace: ssuganth-dev
+    labels:
+      app.kubernetes.io/part-of: demoapi-app
+  spec:
+    ports:
+      - name: "http"
+        port: 8080
+        targetPort: 8080
+    selector:
+      name: demoapi-dc

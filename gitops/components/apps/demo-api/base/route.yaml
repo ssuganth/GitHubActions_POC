@@ -1,0 +1,22 @@
+  apiVersion: route.openshift.io/v1
+  kind: Route
+  namespace: ssuganth-dev
+  labels:
+    app: demoapi-dc
+    app.kubernetes.io/component: demoapi-app
+    app.kubernetes.io/instance: demoapi-app
+    app.kubernetes.io/part-of: demoapi-app
+  metadata:
+    name: demoapi-dc
+    namespace: ssuganth-dev
+  spec:
+    #host: demoapi-ssuganth-dev.gov.bc.ca
+    to:
+      kind: Service
+      name: demoapi-dc
+      weight: 100
+    port:
+      targetPort: http
+    tls:
+      termination: edge
+    wildcardPolicy: None
