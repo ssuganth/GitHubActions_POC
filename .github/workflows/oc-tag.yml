@@ -1,0 +1,28 @@
+name: Test OC Tagging
+
+on:        
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Release Environment'     
+                required: true
+                default: 'dev'
+jobs:
+  oc-poc:
+    runs-on: ubuntu-20.04
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+
+      - name: Git Checkout
+        uses: actions/checkout@v2
+    
+      - name: Login to OpenShift
+        uses: docker/login-action@v1
+        with:
+          registry: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com
+          username: ssuganth
+          password: sha256~TRZhI-xKajXnBW-6emMDt0GKY-NvFSc6dns7ITJsg8E
+
+      - name: Check OC Verison
+        run: |
+          oc version
