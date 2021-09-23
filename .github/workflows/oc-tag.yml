@@ -22,11 +22,7 @@ jobs:
           registry: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com
           username: ssuganth
           password: sha256~TRZhI-xKajXnBW-6emMDt0GKY-NvFSc6dns7ITJsg8E
-          
-      - name: Check OC help
-        run: |
-          oc --help
 
       - name: Check OC tag
         run: |
-          oc tag image-registry.openshift-image-registry.svc:5000/ssuganth-dev/redis:latest redis:v1
+          oc tag default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/redis:latest redis:v1
