@@ -25,4 +25,4 @@ jobs:
 
       - name: Check OC Verison
         run: |
-          oc version
+          oc tag default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/redis:latest redis:v1
