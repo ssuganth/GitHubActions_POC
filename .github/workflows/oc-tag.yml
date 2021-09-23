@@ -25,4 +25,5 @@ jobs:
 
       - name: Check OC tag
         run: |
-          oc tag default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/redis:latest redis:v1
+          oc project ssuganth-dev
+          oc tag redis:latest redis:v1
