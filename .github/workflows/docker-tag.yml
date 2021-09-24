@@ -1,0 +1,31 @@
+name: docker tag poc
+
+on:        
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Release Environment'     
+                required: true
+                default: 'dev'
+jobs:
+  dcoker-tagging:
+    runs-on: ubuntu-20.04
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+
+      - name: Git Checkout
+        uses: actions/checkout@v2
+    
+      - name: Login to OpenShift
+        uses: docker/login-action@v1
+        with:
+          registry: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com
+          username: ssuganth
+          password: sha256~rfTxpn2I1GCjgo-rsQwyylzqy3TvgKsMhXQHjhIaDQw
+
+      - name: Build and push
+        env:
+          oldTag: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/redis:latest
+          newTag: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/redis:v2.1
+        run: |
+          docker tag ${oldTag} ${newTag} 
