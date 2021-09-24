@@ -25,7 +25,7 @@ jobs:
 
       - name: Build and push
         env:
-          oldTag: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/redis
-          newTag: default-route-openshift-image-registry.apps.sandbox.x8i5.p1.openshiftapps.com/ssuganth-dev/redis
+          oldTag: image-registry.openshift-image-registry.svc:5000/ssuganth-dev/redis:latest
+          newTag: image-registry.openshift-image-registry.svc:5000/ssuganth-dev/redis:v2.1
         run: |
-          docker tag ${oldTag}:latest ${newTag}:v2.1
+          docker tag ${oldTag} ${newTag}
