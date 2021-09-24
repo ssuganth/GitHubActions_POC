@@ -37,5 +37,5 @@ jobs:
       
       - name: Retag image to release env.
         run: |
-          oc tag image-registry.openshift-image-registry.svc:5000/ssuganth-dev/redis:latest redis:v2
+          oc tag image-registry.openshift-image-registry.svc:5000/ssuganth-dev/redis:latest redis:v1.0
          
