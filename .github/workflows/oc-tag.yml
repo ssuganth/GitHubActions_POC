@@ -38,8 +38,4 @@ jobs:
       - name: Retag image to release env.
         run: |
           oc tag image-registry.openshift-image-registry.svc:5000/ssuganth-dev/redis:latest redis:v2
-      
-      - name: End Openshift session
-        run: |
-          oc logout
          
