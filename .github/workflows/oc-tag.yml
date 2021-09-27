@@ -20,7 +20,7 @@ jobs:
         uses: redhat-actions/oc-login@v1
         env:
           # These can be stored in secrets, if desired.
-          OPENSHIFT_USER: default
+          OPENSHIFT_USER: builder
           OPENSHIFT_NAMESPACE: 17b24e-dev
 
         with:
@@ -30,7 +30,7 @@ jobs:
 
           # Authentication Token. Can use username and password instead.
           # Refer to Step 3.
-          openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtZGV2Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tMnNyMnoiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjA3ZTY4MGE3LTNmMzctNGZhNy05NzllLTY0NGNhNGJmMzdlYiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDoxN2IyNGUtZGV2OmRlZmF1bHQifQ.pVXpZFYaOSHXuTtS-WL8jabrMvmGkr6SnxJzYey-h4uwYeeIJO4D-SFvbHDGx-HDNNCSJolPgxJHqs4muQkg_4aCw3Cl2CG1JDdWk0xneFChP513c7m72VAxbNlte-CR-ZcxseIE0iyIBofoZDtV0o6bsu-DNIEOwRJIwbOnw_VWXWNi5Z6zL3nZX0ert2mQrUO5SJ2bqtKj4yG-pIw4GtmlsGOapYWUjEq3D8AolM5IDmstZDI3ogEe3S2zJZMKce4m8Yaz3ePQHr2p7EhzOt7ayMfsrWUnQPc0e9tM4fgs3WvPQHVGYBw3sn39rkuyHhECPvo-K3Ycv_VYQxmXRQ
+          openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtZGV2Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImJ1aWxkZXItdG9rZW4tY3F6dGYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYnVpbGRlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImMyZGMxM2Y2LWQ1MTMtNGJiNy1hOTcwLTFlZDRjYzk4ZTg4YiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDoxN2IyNGUtZGV2OmJ1aWxkZXIifQ.dSFGJs1N4VL10opgdULU6_bxcAUC9Rf6lhg5xROUgDYWIQ4gC10ZhJYN9xu8oYtebeO9NdkJh3n6jdEpt15f4iroNyq79ETKgmYRnJvGsx6iB-YJHD-WxN7q2dB4U4CP2mtqybiyuPng9GbEV2OT8m8OqN21vO-BGvBsnjIJRTwACnlCjX3236uk89JY-NmZb8IozO0g2H2WF14r01Vew6jzYniVKs9zixPSBZN4OqoIuMJJo7pVl5hwv46Wdpbd7oSjP2HuvE0qB1aJY0kQyLzEPaC2P0R62NMykcgoRJCFlp03p14m9Uxwl6ZRNaTXxxIfXoGbq_cawr7tkUO4dg
 
           # Optional - this sets your Kubernetes context's current namespace after logging in.
           namespace: 17b24e-dev
