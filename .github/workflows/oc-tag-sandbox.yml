@@ -37,7 +37,7 @@ jobs:
       
       - name: Get Release Version
         run: |
-          branch=${GITHUB_REF}
+          branch=${GITHUB_REF##*/}
           version=$(echo $branch | cut -d "/" -f2-)
           echo "releaseVersion=$version" >> $GITHUB_ENV
       
