@@ -37,5 +37,5 @@ jobs:
       
       - name: POD Labelling
         run: |
-          oc label pods -l 'name=demoapi-dc' version=V1 --overwrite
+          oc label pods -l 'name=demoapi-dc' version=V2 --overwrite
          
