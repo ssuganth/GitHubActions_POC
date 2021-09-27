@@ -11,8 +11,6 @@ jobs:
   oc-poc:
     runs-on: ubuntu-20.04
     environment: ${{ github.event.inputs.environment }}
-    outputs:
-        releaseVersion: ${{ steps.releaseversion.outputs.releaseVersion }}
     steps:
 
       - name: Git Checkout
@@ -44,10 +42,8 @@ jobs:
           echo "releaseVersion=$version" >> $GITHUB_ENV
       
       - name: Print Release Version
-        id: releaseversion
         run: |
           echo "Release version is ${{ env.releaseVersion }}"
-          echo "::set-output name=releaseVersion::${{ env.releaseVersion }}"
           echo "Release Environment: ${{ github.event.inputs.environment }}"
       
       - name: POD Labelling
