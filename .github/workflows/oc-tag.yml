@@ -21,7 +21,7 @@ jobs:
         env:
           # These can be stored in secrets, if desired.
           OPENSHIFT_USER: deployer
-          OPENSHIFT_NAMESPACE: 17b24e-tools
+          OPENSHIFT_NAMESPACE: 17b24e-dev
 
         with:
           # URL to your OpenShift cluster.
@@ -33,9 +33,9 @@ jobs:
           openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtdG9vbHMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoiZGVwbG95ZXItdG9rZW4tYzV4cmgiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVwbG95ZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIyNWVmYzBhOC0yNGVmLTQxNWUtOGJmZS0xYTNmMmZiNDNkZjIiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6MTdiMjRlLXRvb2xzOmRlcGxveWVyIn0.Bobbg5ND9iNXUSql952YzBYugOJ3KRHoSYy8gPo-ZCUtQsjDQTDnn00AFrSDTBSGS9tmwW0tGW17usi3MFDhgYXcBkubryG1pIMe58vsoMxwVogruKF1-3exOSNvGs5MKan9O8r6U8gzqdZCdt9fSjI5trcmFRfD5kzq5Adc3g3AV_AxSgUbfPcb6CmXPMHblBphD5SCX6TB07jMB57_5pCKZtCTe-7kfzkG6YWlQfMZrlQGNnkTpqQ5RQaAWlpTGwipG-1PMLRGDuDvcgdOboCZuJEMMpiN4ja0e1NiEZuld_QhZoL20tsC9KWMgfZdGT0ibOie0ahPUoCNhglAUw
 
           # Optional - this sets your Kubernetes context's current namespace after logging in.
-          namespace: 17b24e-tools
+          namespace: 17b24e-dev
       
-      - name: Retag image to release env.
+      - name: POD Labelling
         run: |
-          oc tag image-registry.openshift-image-registry.svc:5000/17b24e-tools/jag-scss:dev jag-scss:test
+          oc label pods -l 'name=jag-scss' version=V3 --overwrite
          
