@@ -39,7 +39,7 @@ jobs:
       
       - name: Get Release Version
         run: |
-          branch=release/v1.0
+          branch=${GITHUB_REF}
           version=$(echo $branch | cut -d "/" -f2-)
           echo "releaseVersion=$version" >> $GITHUB_ENV
       
