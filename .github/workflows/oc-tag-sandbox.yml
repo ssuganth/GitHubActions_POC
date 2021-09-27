@@ -1,0 +1,41 @@
+name: OC POD Label SandBox
+
+on:        
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Release Environment'     
+                required: true
+                default: 'dev'
+jobs:
+  oc-poc:
+    runs-on: ubuntu-20.04
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+
+      - name: Git Checkout
+        uses: actions/checkout@v2
+
+      - name: Authenticate and set context
+        uses: redhat-actions/oc-login@v1
+        env:
+          # These can be stored in secrets, if desired.
+          OPENSHIFT_USER: builder
+          OPENSHIFT_NAMESPACE: ssuganth-dev
+
+        with:
+          # URL to your OpenShift cluster.
+          # Refer to Step 2.
+          openshift_server_url: https://api.sandbox.x8i5.p1.openshiftapps.com:6443
+
+          # Authentication Token. Can use username and password instead.
+          # Refer to Step 3.
+          openshift_token:        eyJhbGciOiJSUzI1NiIsImtpZCI6IlZ0UXdOWnhYbFNlUE50VEE5RngyelpEbkUxd0hoeHNhVXNCV1pWeW40YWMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJzc3VnYW50aC1kZXYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoiYnVpbGRlci10b2tlbi1kdnJiZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJidWlsZGVyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMTVkOTdmNGUtMGM1Yi00MTgwLThkNTctMjRkZGU4YTc5MjRhIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OnNzdWdhbnRoLWRldjpidWlsZGVyIn0.OU5_Lkl1I0VVfRX7aSGS76PH7yVnU1OAB6W4NCRwUcWIhD7itGDqNpy-wDTxxKXyZqjZeklt_KgjgNCoOMtiLarEWYMDwQ3R4LULrIp76q8NKcELBLsYcyPY-nsqhv3xrop3INsuODLM7b6ltifn1CZSyJKci_ScT1pnWDpk8F1Of3oEtkfHvNSwPuR_Bse5XZgMlLvHL-ARxGXPXoQunzSjtwk6CKi0Wwft1AfNe2umwlIj0TgcjI4wzUCyJf-NntmSPqX0KTBZLHG14RW_tvk90rTjsbWBZ0huzNDPhCM9yA9GkjHerIZ4Jg4jtURvjPmsmsrMB9NsAKvHenNECg
+
+          # Optional - this sets your Kubernetes context's current namespace after logging in.
+          namespace: ssuganth-dev
+      
+      - name: POD Labelling
+        run: |
+          oc label pods -l 'name=demoapi-dc' version=V1 --overwrite
+         
