@@ -1,41 +1,78 @@
-name: Test OC Tagging
+name: Trigger deployment to test/prod Openshift environnment by Image stream re-tagging and labelling pod
 
 on:        
     workflow_dispatch:
         inputs:
-            environment:
-                description: 'Release Environment'     
+            app:
+                description: 'App Name (jag-scss)'    
+                required: true
+            imageSourceEnv:
+                description: 'Image Source Env'     
                 required: true
                 default: 'dev'
+            imageTargetEnv:
+                description: 'Target Release Env'
+                required: true
 jobs:
-  oc-poc:
+  oc-image-tagging:
     runs-on: ubuntu-20.04
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.imageTargetEnv }}
     steps:
 
       - name: Git Checkout
         uses: actions/checkout@v2
+        
+        # Get the version number which is prefixed with the Github release branches in format release/{version}
+      - name: Get Release Version
+        run: |
+          branch=${GITHUB_REF##*/}
+          version=$(echo $branch | cut -d "/" -f2-)
+          echo "releaseVersion=$version" >> $GITHUB_ENV
+      
+      - name: Print Release Details
+        run: |
+          echo "Release version is ${{ env.releaseVersion }}"
+          echo "Release Environment: ${{ github.event.inputs.environment }}"
 
-      - name: Authenticate and set context
+        #Login to Openshift using OC Tools SA and Token for image stream tagging changes
+      - name: Authenticate OC Tools SA
         uses: redhat-actions/oc-login@v1
         env:
-          # These can be stored in secrets, if desired.
-          OPENSHIFT_USER: builder
-          OPENSHIFT_NAMESPACE: 17b24e-dev
-
+          OPENSHIFT_NAMESPACE: 17b24e-tools
+          OPENSHIFT_USER: deployer
         with:
-          # URL to your OpenShift cluster.
-          # Refer to Step 2.
           openshift_server_url: https://api.silver.devops.gov.bc.ca:6443
-
-          # Authentication Token. Can use username and password instead.
-          # Refer to Step 3.
-          openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtZGV2Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImJ1aWxkZXItdG9rZW4tY3F6dGYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYnVpbGRlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImMyZGMxM2Y2LWQ1MTMtNGJiNy1hOTcwLTFlZDRjYzk4ZTg4YiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDoxN2IyNGUtZGV2OmJ1aWxkZXIifQ.dSFGJs1N4VL10opgdULU6_bxcAUC9Rf6lhg5xROUgDYWIQ4gC10ZhJYN9xu8oYtebeO9NdkJh3n6jdEpt15f4iroNyq79ETKgmYRnJvGsx6iB-YJHD-WxN7q2dB4U4CP2mtqybiyuPng9GbEV2OT8m8OqN21vO-BGvBsnjIJRTwACnlCjX3236uk89JY-NmZb8IozO0g2H2WF14r01Vew6jzYniVKs9zixPSBZN4OqoIuMJJo7pVl5hwv46Wdpbd7oSjP2HuvE0qB1aJY0kQyLzEPaC2P0R62NMykcgoRJCFlp03p14m9Uxwl6ZRNaTXxxIfXoGbq_cawr7tkUO4dg
-
-          # Optional - this sets your Kubernetes context's current namespace after logging in.
-          namespace: 17b24e-dev
-      
-      - name: POD Labelling
+          openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtdG9vbHMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoiZGVwbG95ZXItdG9rZW4tYzV4cmgiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVwbG95ZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIyNWVmYzBhOC0yNGVmLTQxNWUtOGJmZS0xYTNmMmZiNDNkZjIiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6MTdiMjRlLXRvb2xzOmRlcGxveWVyIn0.Bobbg5ND9iNXUSql952YzBYugOJ3KRHoSYy8gPo-ZCUtQsjDQTDnn00AFrSDTBSGS9tmwW0tGW17usi3MFDhgYXcBkubryG1pIMe58vsoMxwVogruKF1-3exOSNvGs5MKan9O8r6U8gzqdZCdt9fSjI5trcmFRfD5kzq5Adc3g3AV_AxSgUbfPcb6CmXPMHblBphD5SCX6TB07jMB57_5pCKZtCTe-7kfzkG6YWlQfMZrlQGNnkTpqQ5RQaAWlpTGwipG-1PMLRGDuDvcgdOboCZuJEMMpiN4ja0e1NiEZuld_QhZoL20tsC9KWMgfZdGT0ibOie0ahPUoCNhglAUw
+        
+        # Re-Tag latest dev (source) image to other env to trigger openshift deployment via DeploymentConfig
+        # It also creates a tag with release version number to use it in case of rollback.
+      - name: Retag image to release env and version.
+        env:
+          appName: ${{ github.event.inputs.app }}
+          imageSourceEnv: ${{ github.event.inputs.imageSourceEnv }}
+          imageTargetEnv: ${{ github.event.inputs.imageTargetEnv }}
+          openshiftToolsNamespace: 17b24e-tools
+          openshiftIImageRegistry: image-registry.openshift-image-registry.svc:5000
+          releaseVersion: ${{ env.releaseVersion }}
         run: |
-          oc label pods -l 'name=jag-scss' version=V3 --overwrite
-         
+          oc tag ${openshiftIImageRegistry}/${openshiftToolsNamespace}/${appName}:${imageSourceEnv} ${appName}:${imageTargetEnv}
+          oc tag ${openshiftIImageRegistry}/${openshiftToolsNamespace}/${appName}:${imageSourceEnv} ${appName}:${releaseVersion}
+
+        #Login to Openshift using OC SA and Token of respective env. for Pod labelling
+      - name: Authenticate OC Env Specific SA
+        uses: redhat-actions/oc-login@v1
+        env:
+          OPENSHIFT_NAMESPACE: 17b24e-test
+          OPENSHIFT_USER: deployer
+        with:
+          openshift_server_url: https://api.silver.devops.gov.bc.ca:6443
+          openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtdGVzdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZXBsb3llci10b2tlbi14ODI0NCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJkZXBsb3llciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjgwZDdhYzRlLTQxM2YtNGNmZi1hMzcwLTY1OGZlNmRlNjE0YiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDoxN2IyNGUtdGVzdDpkZXBsb3llciJ9.CqhfoUnx8OfwkiXW9Lm2lmFOLBwbL5HiL-3PDOPn_Nu_F9NNpZxcNPLh0zQLNX2EvyrFH32F-ECNGk-RShcj0Klhs3MNQ1WXzA1NcuHfvaVYsSHhMjLmmjJuOwsCscF51shBY4gBzOqJV5oj51GU91v0hOHLZpX2PeX2pPERMe8F8RByvmtNQNF4VD7QZ2fTnEwbtpYM7w9CFUkblMXAgPudpVdWD9Q5t5sdM_G-rAUG165VmYrsZiXDyMtbsbs61guEjhIs2JY3VCc7lVbn_lXtVGt13t3SQJTvaPC6h8Iq_YE-zLTFZDMCJynx5yKj1QKfsthpxl0_7yRM7lYq9w		  
+        
+        # Labels the pods with release version number for better identification.
+      - name: Labelling Pod to release version
+        env:
+          releaseVersion: ${{ env.releaseVersion }}
+          appName: ${{ github.event.inputs.app }}
+          openshiftEnvNamespace: 17b24e-${{ github.event.inputs.imageTargetEnv }}
+        run: |
+          oc label pods -l name=${appName} -n ${openshiftEnvNamespace} version=${releaseVersion} --overwrite
