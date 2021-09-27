@@ -11,6 +11,8 @@ jobs:
   oc-poc:
     runs-on: ubuntu-20.04
     environment: ${{ github.event.inputs.environment }}
+    outputs:
+        releaseVersion: ${{ steps.releaseversion.outputs.releaseVersion }}
     steps:
 
       - name: Git Checkout
@@ -35,7 +37,22 @@ jobs:
           # Optional - this sets your Kubernetes context's current namespace after logging in.
           namespace: ssuganth-dev
       
-      - name: POD Labelling
+      - name: Get Release Version
         run: |
-          oc label pods -l 'name=demoapi-dc' version=V2 --overwrite
+          branch=release/v1.0
+          version=$(echo $branch | cut -d "/" -f2-)
+          echo "releaseVersion=$version" >> $GITHUB_ENV
+      
+      - name: Print Release Version
+        id: releaseversion
+        run: |
+          echo "Release version is ${{ env.releaseVersion }}"
+          echo "::set-output name=releaseVersion::${{ env.releaseVersion }}"
+          echo "Release Environment: ${{ github.event.inputs.environment }}"
+      
+      - name: POD Labelling
+        env:
+          releaseVersion: ${{ env.releaseVersion }}
+        run: |
+          oc label pods -l 'name=demoapi-dc' version=${releaseVersion} --overwrite
          
