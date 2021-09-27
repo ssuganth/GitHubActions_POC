@@ -78,4 +78,4 @@ jobs:
           openshiftEnvNamespace: 17b24e-${{ github.event.inputs.imageTargetEnv }}
         run: |
           oc get pods -n ${openshiftEnvNamespace}
-       #oc label pods -l name=${appName} -n ${openshiftEnvNamespace} version=${releaseVersion} --overwrite
+          oc label pods -l name=${appName} -n ${openshiftEnvNamespace} version=${releaseVersion} --overwrite
