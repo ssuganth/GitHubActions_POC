@@ -34,31 +34,6 @@ jobs:
           echo "Release version is ${{ env.releaseVersion }}"
           echo "Release Environment: ${{ github.event.inputs.environment }}"
 
-        #Login to Openshift using OC Tools SA and Token for image stream tagging changes
-      - name: Authenticate OC Tools SA
-        uses: redhat-actions/oc-login@v1
-        env:
-          OPENSHIFT_NAMESPACE: 17b24e-tools
-          OPENSHIFT_USER: deployer
-        with:
-          openshift_server_url: https://api.silver.devops.gov.bc.ca:6443
-          openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtdG9vbHMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoiZGVwbG95ZXItdG9rZW4tYzV4cmgiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVwbG95ZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIyNWVmYzBhOC0yNGVmLTQxNWUtOGJmZS0xYTNmMmZiNDNkZjIiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6MTdiMjRlLXRvb2xzOmRlcGxveWVyIn0.Bobbg5ND9iNXUSql952YzBYugOJ3KRHoSYy8gPo-ZCUtQsjDQTDnn00AFrSDTBSGS9tmwW0tGW17usi3MFDhgYXcBkubryG1pIMe58vsoMxwVogruKF1-3exOSNvGs5MKan9O8r6U8gzqdZCdt9fSjI5trcmFRfD5kzq5Adc3g3AV_AxSgUbfPcb6CmXPMHblBphD5SCX6TB07jMB57_5pCKZtCTe-7kfzkG6YWlQfMZrlQGNnkTpqQ5RQaAWlpTGwipG-1PMLRGDuDvcgdOboCZuJEMMpiN4ja0e1NiEZuld_QhZoL20tsC9KWMgfZdGT0ibOie0ahPUoCNhglAUw
-          namespace: 17b24e-tools
-        
-        # Re-Tag latest dev (source) image to other env to trigger openshift deployment via DeploymentConfig
-        # It also creates a tag with release version number to use it in case of rollback.
-      - name: Retag image to release env and version.
-        env:
-          appName: ${{ github.event.inputs.app }}
-          imageSourceEnv: ${{ github.event.inputs.imageSourceEnv }}
-          imageTargetEnv: ${{ github.event.inputs.imageTargetEnv }}
-          openshiftToolsNamespace: 17b24e-tools
-          openshiftIImageRegistry: image-registry.openshift-image-registry.svc:5000
-          releaseVersion: ${{ env.releaseVersion }}
-        run: |
-          oc tag ${openshiftIImageRegistry}/${openshiftToolsNamespace}/${appName}:${imageSourceEnv} ${appName}:${imageTargetEnv}
-          oc tag ${openshiftIImageRegistry}/${openshiftToolsNamespace}/${appName}:${imageSourceEnv} ${appName}:${releaseVersion}
-
         #Login to Openshift using OC SA and Token of respective env. for Pod labelling
       - name: Authenticate OC Env Specific SA
         uses: redhat-actions/oc-login@v1
@@ -77,5 +52,4 @@ jobs:
           appName: ${{ github.event.inputs.app }}
           openshiftEnvNamespace: 17b24e-${{ github.event.inputs.imageTargetEnv }}
         run: |
-          oc get pods -n ${openshiftEnvNamespace}
-          oc label pods -l name=${appName} -n ${openshiftEnvNamespace} version=${releaseVersion} --overwrite
+          oc patch dc jag-scss --patch '{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"version\":\"V1\"}}}}}'
