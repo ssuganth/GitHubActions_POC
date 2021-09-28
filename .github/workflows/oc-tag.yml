@@ -10,32 +10,10 @@ on:
 jobs:
   oc-poc:
     runs-on: ubuntu-20.04
-    environment: ${{ github.event.inputs.environment }}
     steps:
 
-      - name: Git Checkout
-        uses: actions/checkout@v2
-
-      - name: Authenticate and set context
-        uses: redhat-actions/oc-login@v1
-        env:
-          # These can be stored in secrets, if desired.
-          OPENSHIFT_USER: builder
-          OPENSHIFT_NAMESPACE: 17b24e-dev
-
-        with:
-          # URL to your OpenShift cluster.
-          # Refer to Step 2.
-          openshift_server_url: https://api.silver.devops.gov.bc.ca:6443
-
-          # Authentication Token. Can use username and password instead.
-          # Refer to Step 3.
-          openshift_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InIxU0VzMHpBT1pXeEhSZVlxek14aXQ2R2FLUDF3RXprMlhHald5SFJaNzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIxN2IyNGUtZGV2Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImJ1aWxkZXItdG9rZW4tY3F6dGYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYnVpbGRlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImMyZGMxM2Y2LWQ1MTMtNGJiNy1hOTcwLTFlZDRjYzk4ZTg4YiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDoxN2IyNGUtZGV2OmJ1aWxkZXIifQ.dSFGJs1N4VL10opgdULU6_bxcAUC9Rf6lhg5xROUgDYWIQ4gC10ZhJYN9xu8oYtebeO9NdkJh3n6jdEpt15f4iroNyq79ETKgmYRnJvGsx6iB-YJHD-WxN7q2dB4U4CP2mtqybiyuPng9GbEV2OT8m8OqN21vO-BGvBsnjIJRTwACnlCjX3236uk89JY-NmZb8IozO0g2H2WF14r01Vew6jzYniVKs9zixPSBZN4OqoIuMJJo7pVl5hwv46Wdpbd7oSjP2HuvE0qB1aJY0kQyLzEPaC2P0R62NMykcgoRJCFlp03p14m9Uxwl6ZRNaTXxxIfXoGbq_cawr7tkUO4dg
-
-          # Optional - this sets your Kubernetes context's current namespace after logging in.
-          namespace: 17b24e-dev
-      
-      - name: POD Labelling
-        run: |
-          oc label pods -l 'name=jag-scss' version=V3 --overwrite
+     - name: Sleep for 15 seconds
+       uses: jakejarvis/wait-action@master
+       with:
+         time: '15s'
          
