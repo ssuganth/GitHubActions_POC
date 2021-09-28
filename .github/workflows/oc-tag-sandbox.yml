@@ -49,5 +49,5 @@ jobs:
         env:
           releaseVersion: ${{ env.releaseVersion }}
         run: |
-          oc patch dc redis --patch '{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"version\":\"V6\"}}}}}'
+          oc patch dc redis --patch '{"spec":{"template":{"metadata":{"labels\":{"version":"V6"}}}}}'
          
