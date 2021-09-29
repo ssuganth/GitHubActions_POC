@@ -47,7 +47,8 @@ jobs:
       
       - name: DC Update
         env:
-          releaseVersion: ${{ env.releaseVersion }}
+          appName: redis
+          openshiftEnvNamespace: ssuganth-dev
         run: |
-          oc patch dc redis --patch '{"spec":{"template":{"metadata":{"labels":{"version":"${{ env.releaseVersion }}"}}}}}'
+          oc patch dc ${appName} -n ${openshiftEnvNamespace} --patch '{"spec":{"template":{"metadata":{"labels":{"version":"${{ env.releaseVersion }}"}}}}}'
          
