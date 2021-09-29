@@ -43,14 +43,15 @@ jobs:
       - name: Get git commit short sha
         id: sha
         run: |
-          shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-6)
+          shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-7)
           echo "gitsha=$shortSha" >> $GITHUB_ENV
       
-      - name: Print Release Version
+      - name: Print Release Variables
         run: |
-          echo "Release version is ${{ env.releaseVersion }}"
+          echo "Release Application: Redis"
+          echo "Release Version: ${{ env.releaseVersion }}"
           echo "Release Environment: ${{ github.event.inputs.environment }}"
-          echo "Git Sha: ${{env.gitsha}}"
+          echo "Release Git Sha: ${{env.gitsha}}"
       
       
       - name: DC Update
@@ -58,5 +59,5 @@ jobs:
           appName: redis
           openshiftEnvNamespace: ssuganth-dev
         run: |
-          oc patch dc ${appName} -n ${openshiftEnvNamespace} --patch '{"spec":{"template":{"metadata":{"labels":{"version":"${{ env.releaseVersion }}"}}}}}'
+          oc patch dc ${appName} -n ${openshiftEnvNamespace} --patch '{"spec":{"template":{"metadata":{"labels":{"version":"${{ env.releaseVersion }}.${{env.gitsha}}"}}}}}'
          
