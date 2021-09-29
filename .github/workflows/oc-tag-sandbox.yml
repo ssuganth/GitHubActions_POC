@@ -39,11 +39,19 @@ jobs:
           branch=${GITHUB_REF##*/}
           version=$(echo $branch | cut -d "/" -f2-)
           echo "releaseVersion=$version" >> $GITHUB_ENV
+          
+      - name: Get git commit short sha
+        id: sha
+        run: |
+          shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-6)
+          echo "gitsha=$shortSha" >> $GITHUB_ENV
       
       - name: Print Release Version
         run: |
           echo "Release version is ${{ env.releaseVersion }}"
           echo "Release Environment: ${{ github.event.inputs.environment }}"
+          echo "Git Sha: ${{env.gitsha}}"
+      
       
       - name: DC Update
         env:
